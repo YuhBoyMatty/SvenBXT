@@ -87,9 +87,11 @@ void CL_Initialize()
 	Find(Client, V_CalcRefdef);
 	Find(Client, HUD_VidInit);
 	Find(Client, HUD_Redraw);
+	Find(Client, HUD_DrawTransparentTriangles);
 	CreateHook(Client, V_CalcRefdef);
 	CreateHook(Client, HUD_VidInit);
 	CreateHook(Client, HUD_Redraw);
+	CreateHook(Client, HUD_DrawTransparentTriangles);
 	
 	TRACE("Initializing HUD...\n");
 	gBXTHud.Init();

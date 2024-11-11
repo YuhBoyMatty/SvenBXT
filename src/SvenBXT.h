@@ -72,6 +72,7 @@ extern server_t* sv;
 #include "cl_dll/hud.h"
 #include "cl_dll/parsemsg.h"
 #include "cl_dll/view.h"
+#include "cl_dll/tri.h"
 #include "cl_dll/opengl_utils.hpp"
 
 #include "engine/gl_screen.h"

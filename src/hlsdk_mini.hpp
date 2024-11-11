@@ -2396,45 +2396,6 @@ typedef struct mleaf_s
 	byte ambient_sound_level[NUM_AMBIENTS];
 } mleaf_t;
 
-struct msurface_s
-{
-	int visframe; // should be drawn when node is crossed
-
-	int dlightframe; // last frame the surface was checked by an animated light
-	int dlightbits;	 // dynamically generated. Indicates if the surface illumination
-	// is modified by an animated light.
-
-	mplane_t* plane; // pointer to shared plane
-	int flags;		 // see SURF_ #defines
-
-	int firstedge; // look up in model->surfedges[], negative numbers
-	int numedges;  // are backwards edges
-
-	// surface generation data
-	struct surfcache_s* cachespots[MIPLEVELS];
-
-	short texturemins[2]; // smallest s/t position on the surface.
-	short extents[2];	  // ?? s/t texture size, 1..256 for all non-sky surfaces
-
-	mtexinfo_t* texinfo;
-
-	// lighting info
-	byte styles[MAXLIGHTMAPS]; // index into d_lightstylevalue[] for animated lights
-	// no one surface can be effected by more than 4
-	// animated lights.
-	color24* samples;
-
-	decal_t* pdecals;
-};
-
-typedef struct mdisplaylist_s
-{
-	unsigned int gl_displaylist;
-	int rendermode;
-	float scrolloffset;
-	int renderDetailTexture;
-} mdisplaylist_t;
-
 typedef struct glpoly_s
 {
 	glpoly_s* next;
@@ -2444,32 +2405,40 @@ typedef struct glpoly_s
 	float verts[4][7];
 } glpoly_t;
 
-
-typedef struct msurface_HL25_s
+struct msurface_s
 {
-	int visframe;
-	mplane_t* plane;
-	int flags;
-	int firstedge;
-	int numedges;
-	short texturemins[2];
-	short extents[2];
-	int light_s;
-	int light_t;
-	glpoly_t* polys;
-	msurface_s* texturechain;
+	int visframe; // should be drawn when node is crossed
+
+	mplane_t* plane; // pointer to shared plane
+	int flags;		 // see SURF_ #defines
+
+	int firstedge; // look up in model->surfedges[], negative numbers
+	int numedges;  // are backwards edges
+
+	short texturemins[2]; // smallest s/t position on the surface.
+	short extents[2];	  // ?? s/t texture size, 1..256 for all non-sky surfaces
+
+	int light_s, light_t; // gl lightmap coordinates
+
+	glpoly_t* polys; // multiple if warped
+	msurface_t* texturechain;
+
 	mtexinfo_t* texinfo;
+
+	// lighting info
 	int dlightframe;
 	int dlightbits;
-	int lightmaptexturenum;
-	byte styles[4];
-	int cached_light[4];
-	qboolean cached_dlight;
-	color24* samples;
-	decal_t* pdecals;
-	mdisplaylist_t displaylist;
-} msurface_HL25_t;
 
+	int lightmaptexturenum;
+	byte styles[MAXLIGHTMAPS]; // index into d_lightstylevalue[] for animated lights
+							   // no one surface can be effected by more than 4
+							   // animated lights.
+
+	int cached_light[MAXLIGHTMAPS]; // values currently used in lightmap
+	qboolean cached_dlight;			// true if dynamic light in cache
+	color24* samples;				// [numstyles*surfsize]
+	decal_t* pdecals;
+};
 
 typedef struct
 {
@@ -2567,79 +2536,6 @@ typedef struct model_s
 	cache_user_t cache; // only access through Mod_Extradata
 
 } model_t;
-
-typedef struct model_HL25_s
-{
-	char name[MAX_MODEL_NAME];
-	qboolean needload; // bmodels and sprites don't cache normally
-
-	modtype_t type;
-	int numframes;
-	synctype_t synctype;
-
-	int flags;
-
-	//
-	// volume occupied by the model
-	//
-	vec3_t mins, maxs;
-	float radius;
-
-	//
-	// brush model
-	//
-	int firstmodelsurface, nummodelsurfaces;
-
-	int numsubmodels;
-	dmodel_t* submodels;
-
-	int numplanes;
-	mplane_t* planes;
-
-	int numleafs; // number of visible leafs, not counting 0
-	struct mleaf_s* leafs;
-
-	int numvertexes;
-	mvertex_t* vertexes;
-
-	int numedges;
-	medge_t* edges;
-
-	int numnodes;
-	mnode_t* nodes;
-
-	int numtexinfo;
-	mtexinfo_t* texinfo;
-
-	int numsurfaces;
-	msurface_HL25_t* surfaces;
-
-	int numsurfedges;
-	int* surfedges;
-
-	int numclipnodes;
-	dclipnode_t* clipnodes;
-
-	int nummarksurfaces;
-	msurface_HL25_t** marksurfaces;
-
-	hull_t hulls[MAX_MAP_HULLS];
-
-	int numtextures;
-	texture_t** textures;
-
-	byte* visdata;
-
-	color24* lightdata;
-
-	char* entities;
-
-	//
-	// additional model data
-	//
-	cache_user_t cache; // only access through Mod_Extradata
-
-} model_HL25_t;
 
 
 #define EVENT_API_VERSION 1

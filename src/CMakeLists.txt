@@ -40,6 +40,8 @@ set(CLIENT_FILES
     cl_dll/opengl_utils.hpp
     cl_dll/parsemsg.cpp
     cl_dll/parsemsg.h
+    cl_dll/tri.cpp
+    cl_dll/tri.h
     cl_dll/view.cpp
     cl_dll/view.h)
 
