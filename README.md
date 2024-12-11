@@ -1,7 +1,10 @@
 # SvenBXT
 
 SvenBXT is a complete remake of [BunnymodXT](https://github.com/YaLTeR/BunnymodXT), designed specifically for Sven Co-op 5.25.
-You can legally use this tool for [Sven Co-op runs](https://www.speedrun.com/sven_coop).
+<br>You can legally use this tool for [Sven Co-op runs](https://www.speedrun.com/sven_coop).</br>
+
+<br>Download latest release: [CLICK](https://github.com/ScriptedSnark/SvenBXT/releases/latest)</br>
+Download nightly build: [CLICK](https://nightly.link/ScriptedSnark/SvenBXT/workflows/CI/new)
 
 ## Installation / Usage
 
