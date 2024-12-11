@@ -32,6 +32,12 @@ void HOOKED_LoadThisDll(char* szDllFilename)
 
 void SV_SyncTimer()
 {
+	if (gmsgBXTTimer <= 0)
+	{
+		Sys_Printf("[Server] Tried to send BXTTimer message but it's not valid!\n");
+		return;
+	}
+
 	MESSAGE_BEGIN(MSG_ALL, gmsgBXTTimer);
 	WRITE_LONG(g_RTATimer.GetTime());
 	WRITE_BYTE(g_RTATimer.IsStopped());
