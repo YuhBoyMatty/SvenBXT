@@ -162,7 +162,7 @@ int CHudCrosshair::Draw(float time)
 		std::istringstream ss(bxt_cross_dot_color->string);
 		ss >> r >> g >> b;
 
-		static float crosshairDotColor[2];
+		static float crosshairDotColor[3];
 		crosshairDotColor[0] = r;
 		crosshairDotColor[1] = g;
 		crosshairDotColor[2] = b;
