@@ -97,7 +97,21 @@ void SvenBXT_FindEngineStuff()
 			switch (pattern - patterns::engine::ClientDLL_Init.cbegin())
 			{
 			default:
-			case 0: // Sven-5.23
+			case 0: // Sven-5.11
+				Sys_Printf("Searching cl_enginefuncs in Sven-5.11 pattern...\n");
+				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 1);
+
+				if (g_lpEngfuncs)
+				{
+					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
+					SvenBXT_HookClient();
+				}
+				else
+					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
+
+				break;
+
+			case 1: // Sven-5.23
 				Sys_Printf("Searching cl_enginefuncs in Sven-5.23 pattern...\n");
 				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 1);
 
@@ -111,7 +125,7 @@ void SvenBXT_FindEngineStuff()
 
 				break;
 
-			case 1: // Sven-5.25
+			case 2: // Sven-5.25
 				Sys_Printf("Searching cl_enginefuncs in Sven-5.25 pattern...\n");
 				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 332);
 
@@ -121,7 +135,7 @@ void SvenBXT_FindEngineStuff()
 					SvenBXT_HookClient();
 				}
 				break;
-			case 2: // Sven-5.26-rc1
+			case 3: // Sven-5.26-rc1
 				Sys_Printf("Searching cl_enginefuncs in Sven-5.26-rc1 pattern...\n");
 				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 354);
 
@@ -143,10 +157,25 @@ void SvenBXT_FindEngineStuff()
 			switch (pattern - patterns::engine::LoadThisDll.cbegin())
 			{
 			default:
-			case 0: // Sven-5.25
+			case 0: // Sven-5.11
+				Sys_Printf("Searching g_engfuncs in Sven-5.11 pattern...\n");
+				g_engfuncs = *reinterpret_cast<enginefuncs_t**>(reinterpret_cast<uintptr_t>(LoadThisDll) + 91);
+				gpGlobals = *reinterpret_cast<globalvars_t**>(reinterpret_cast<uintptr_t>(LoadThisDll) + 86);
+
+				if (g_engfuncs)
+					Sys_Printf("[Engine] Found g_engfuncs at 0x%p.\n", g_engfuncs);
+				else
+					Sys_Printf("[Engine] Failed to find g_engfuncs.\n");
+
+				if (gpGlobals)
+					Sys_Printf("[Engine] Found gpGlobals at 0x%p.\n", gpGlobals);
+				else
+					Sys_Printf("[Engine] Failed to find gpGlobals.\n");
+
+				break;
+			case 1: // Sven-5.25
 				Sys_Printf("Searching g_engfuncs in Sven-5.25 pattern...\n");
-				enginefuncs_t** p_engfuncs = *reinterpret_cast<enginefuncs_t***>(reinterpret_cast<uintptr_t>(LoadThisDll) + 109);
-				g_engfuncs = (*p_engfuncs);
+				g_engfuncs = *reinterpret_cast<enginefuncs_t**>(reinterpret_cast<uintptr_t>(LoadThisDll) + 109);
 				gpGlobals = *reinterpret_cast<globalvars_t**>(reinterpret_cast<uintptr_t>(LoadThisDll) + 67);
 
 				if (g_engfuncs)
@@ -172,7 +201,19 @@ void SvenBXT_FindEngineStuff()
 			switch (pattern - patterns::engine::Host_ClearMemory.cbegin())
 			{
 			default:
-			case 0: // Sven-5.25
+			case 0: // Sven-5.11
+				Sys_Printf("Searching sv in Sven-5.11 pattern...\n");
+				sv = *reinterpret_cast<server_t**>(reinterpret_cast<uintptr_t>(Host_ClearMemory) + 0x5B);
+				if (sv)
+				{
+					Sys_Printf("[Engine] Found sv at 0x%p.\n", sv);
+				}
+				else
+				{
+					Sys_Printf("[Engine] Failed to find sv.\n");
+				}
+				break;
+			case 1: // Sven-5.25
 				Sys_Printf("Searching sv in Sven-5.25 pattern...\n");
 				sv = *reinterpret_cast<server_t**>(reinterpret_cast<uintptr_t>(Host_ClearMemory) + 0x98);
 				if (sv)
