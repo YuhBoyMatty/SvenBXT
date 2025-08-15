@@ -78,6 +78,24 @@ int HOOKED_HUD_Redraw(float time, int intermission)
 	return ORIG_HUD_Redraw(time, intermission);
 }
 
+void __CmdFunc_Append()
+{
+	if (g_lpEngfuncs->Cmd_Argc() != 2)
+	{
+		if (!g_lpEngfuncs->pDemoAPI->IsPlayingback())
+			g_lpEngfuncs->Con_Printf("sbxt_append <command> - put the command into the end of the command buffer.\n");
+
+		return;
+	}
+
+	EngineClientCmd(g_lpEngfuncs->Cmd_Argv(1));
+}
+
+void CL_CmdInitialize()
+{
+	HOOK_COMMAND("sbxt_append", Append);
+}
+
 void CL_Initialize()
 {
 	int status;
@@ -88,11 +106,21 @@ void CL_Initialize()
 	Find(Client, HUD_VidInit);
 	Find(Client, HUD_Redraw);
 	Find(Client, HUD_DrawTransparentTriangles);
+	Find(Client, HUD_PlayerMove);
+	Find(Client, CL_CreateMove);
 	CreateHook(Client, V_CalcRefdef);
 	CreateHook(Client, HUD_VidInit);
 	CreateHook(Client, HUD_Redraw);
 	CreateHook(Client, HUD_DrawTransparentTriangles);
+	CreateHook(Client, HUD_PlayerMove);
+	CreateHook(Client, CL_CreateMove);
 	
 	TRACE("Initializing HUD...\n");
 	gBXTHud.Init();
+
+	TRACE("Initializing client commands...\n");
+	CL_CmdInitialize();
+
+	TRACE("Initializing input...\n");
+	IN_Init();
 }

@@ -97,19 +97,7 @@ void SvenBXT_FindEngineStuff()
 			switch (pattern - patterns::engine::ClientDLL_Init.cbegin())
 			{
 			default:
-			case 0: // Sven-5.25
-				Sys_Printf("Searching cl_enginefuncs in Sven-5.25 pattern...\n");
-				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 332);
-
-				if (g_lpEngfuncs)
-				{
-					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
-					SvenBXT_HookClient();
-				}
-				else
-					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
-				break;
-			case 1: // Sven-5.23
+			case 0: // Sven-5.23
 				Sys_Printf("Searching cl_enginefuncs in Sven-5.23 pattern...\n");
 				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 1);
 
@@ -120,6 +108,18 @@ void SvenBXT_FindEngineStuff()
 				}
 				else
 					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
+
+				break;
+
+			case 1: // Sven-5.25
+				Sys_Printf("Searching cl_enginefuncs in Sven-5.25 pattern...\n");
+				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 332);
+
+				if (g_lpEngfuncs)
+				{
+					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
+					SvenBXT_HookClient();
+				}
 				break;
 			case 2: // Sven-5.26-rc1
 				Sys_Printf("Searching cl_enginefuncs in Sven-5.26-rc1 pattern...\n");
@@ -130,9 +130,6 @@ void SvenBXT_FindEngineStuff()
 					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
 					SvenBXT_HookClient();
 				}
-				else
-					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
-
 				break;
 			}
 		});
@@ -190,13 +187,12 @@ void SvenBXT_FindEngineStuff()
 			}
 		});
 
-	SPTEngineFind(GL_Begin2D);
-	SPTEngineFind(GL_Finish2D);
-
 	SPTEngineFind(LoadThisDll);
 	SPTEngineFind(SCR_BeginLoadingPlaque);
 	SPTEngineFind(SCR_EndLoadingPlaque);
 	SPTEngineFind(GL_EndRendering);
+	SPTEngineFind(GL_Finish2D);
+	SPTEngineFind(GL_Begin2D);
 #endif
 
 	CreateHook(Engine, LoadThisDll);

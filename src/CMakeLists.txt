@@ -36,6 +36,8 @@ set(CLIENT_FILES
     cl_dll/hud_timer.h
     cl_dll/hud_viewangles.cpp
     cl_dll/hud_viewangles.h
+    cl_dll/input.cpp
+    cl_dll/input.h
     cl_dll/opengl_utils.cpp
     cl_dll/opengl_utils.hpp
     cl_dll/parsemsg.cpp
@@ -54,6 +56,7 @@ set(ENGINE_FILES
     engine/gl_screen.h)
 
 set(MAIN_FILES
+    engine_patterns.hpp
     SvenBXT.cpp
     SvenBXT.h
     Utils.cpp
