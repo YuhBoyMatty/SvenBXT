@@ -106,8 +106,22 @@ void SvenBXT_FindEngineStuff()
 					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
 					SvenBXT_HookClient();
 				}
+				else
+					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
 				break;
-			case 1: // Sven-5.26-rc1
+			case 1: // Sven-5.23
+				Sys_Printf("Searching cl_enginefuncs in Sven-5.23 pattern...\n");
+				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 1);
+
+				if (g_lpEngfuncs)
+				{
+					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
+					SvenBXT_HookClient();
+				}
+				else
+					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
+				break;
+			case 2: // Sven-5.26-rc1
 				Sys_Printf("Searching cl_enginefuncs in Sven-5.26-rc1 pattern...\n");
 				g_lpEngfuncs = *reinterpret_cast<cl_enginefunc_t**>(reinterpret_cast<uintptr_t>(ClientDLL_Init) + 354);
 
@@ -116,6 +130,9 @@ void SvenBXT_FindEngineStuff()
 					Sys_Printf("[Engine] Found cl_enginefuncs at 0x%p.\n", g_lpEngfuncs);
 					SvenBXT_HookClient();
 				}
+				else
+					Sys_Printf("[Engine] Failed to find cl_enginefuncs. Can't hook client.\n");
+
 				break;
 			}
 		});
@@ -137,9 +154,14 @@ void SvenBXT_FindEngineStuff()
 
 				if (g_engfuncs)
 					Sys_Printf("[Engine] Found g_engfuncs at 0x%p.\n", g_engfuncs);
+				else
+					Sys_Printf("[Engine] Failed to find g_engfuncs.\n");
 
 				if (gpGlobals)
 					Sys_Printf("[Engine] Found gpGlobals at 0x%p.\n", gpGlobals);
+				else
+					Sys_Printf("[Engine] Failed to find gpGlobals.\n");
+
 				break;
 			}
 		});
@@ -159,6 +181,10 @@ void SvenBXT_FindEngineStuff()
 				if (sv)
 				{
 					Sys_Printf("[Engine] Found sv at 0x%p.\n", sv);
+				}
+				else
+				{
+					Sys_Printf("[Engine] Failed to find sv.\n");
 				}
 				break;
 			}
