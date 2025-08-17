@@ -175,7 +175,7 @@ void SvenBXT_FindEngineStuff()
 				break;
 			case 1: // Sven-5.25
 				Sys_Printf("Searching g_engfuncs in Sven-5.25 pattern...\n");
-				g_engfuncs = *reinterpret_cast<enginefuncs_t**>(reinterpret_cast<uintptr_t>(LoadThisDll) + 109);
+				g_engfuncs = (**reinterpret_cast<enginefuncs_t***>(reinterpret_cast<uintptr_t>(LoadThisDll) + 109));
 				gpGlobals = *reinterpret_cast<globalvars_t**>(reinterpret_cast<uintptr_t>(LoadThisDll) + 67);
 
 				if (g_engfuncs)
