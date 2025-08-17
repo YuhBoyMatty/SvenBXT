@@ -19,6 +19,36 @@ bool UTIL_IsHost()
 
 /*
 ================
+UTIL_IsPlayerOnGround
+================
+*/
+bool UTIL_IsPlayerOnGround()
+{
+	return (g_ppmove->onground != -1);
+}
+
+/*
+================
+UTIL_IsPlayerInWater
+================
+*/
+bool UTIL_IsPlayerInWater()
+{
+	return (g_ppmove->waterlevel > 1);
+}
+
+/*
+================
+UTIL_IsPlayerWalking
+================
+*/
+bool UTIL_IsPlayerWalking()
+{
+	return (g_ppmove->movetype == MOVETYPE_WALK);
+}
+
+/*
+================
 Sys_Printf
 ================
 */

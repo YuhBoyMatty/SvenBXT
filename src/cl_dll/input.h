@@ -10,6 +10,8 @@
 
 #ifdef __cplusplus
 
+extern playermove_t* g_ppmove;
+
 void HOOKED_HUD_PlayerMove(struct playermove_s* ppmove, qboolean server);
 void HOOKED_CL_CreateMove(float frametime, usercmd_s* cmd, int active);
 void IN_Init();

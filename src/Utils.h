@@ -23,6 +23,9 @@ using farproc_t = void*;
 #define TRACE(format, ...) Sys_Printf("%s::%s(%d): " format, __FILE__, __FUNCTION__, __LINE__)
 
 bool UTIL_IsHost();
+bool UTIL_IsPlayerOnGround();
+bool UTIL_IsPlayerInWater();
+bool UTIL_IsPlayerWalking();
 
 void Sys_Printf(const char* fmt, ...);
 dllhandle_t Sys_GetModuleHandle(const char* pszModuleName);
