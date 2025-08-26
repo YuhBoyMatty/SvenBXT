@@ -78,6 +78,28 @@ int HOOKED_HUD_Redraw(float time, int intermission)
 	return ORIG_HUD_Redraw(time, intermission);
 }
 
+void __CmdFunc_Multiwait()
+{
+	if (g_lpEngfuncs->Cmd_Argc() > 1)
+	{
+		int iNumber = atoi(g_lpEngfuncs->Cmd_Argv(1));
+		char rgszCommandBuffer[256];
+
+		if (iNumber > 1)
+			snprintf(rgszCommandBuffer, sizeof(rgszCommandBuffer), ";wait;\nw %d;\n", iNumber - 1);
+		else if (iNumber == 1)
+			snprintf(rgszCommandBuffer, sizeof(rgszCommandBuffer), ";wait;\n");
+		else
+			return;
+
+		rgszCommandBuffer[sizeof(rgszCommandBuffer) - 1] = '\0';
+
+		g_lpEngfuncs->ClientCmd(rgszCommandBuffer);
+	}
+	else
+		g_lpEngfuncs->ClientCmd("wait\n");
+}
+
 void __CmdFunc_Append()
 {
 	if (g_lpEngfuncs->Cmd_Argc() != 2)
@@ -93,6 +115,7 @@ void __CmdFunc_Append()
 
 void CL_CmdInitialize()
 {
+	HOOK_COMMAND("w", Multiwait);
 	HOOK_COMMAND("sbxt_append", Append);
 }
 
